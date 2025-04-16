@@ -36,10 +36,8 @@ def download_nltk_data_if_needed(resource_id, resource_subdir):
         # Optionally re-raise or handle more gracefully depending on your needs
         raise
 
-# --- Call the function ONCE before first use ---
-# Usually good to do this near the top level of your script or page
 try:
-    download_nltk_data_if_needed('punkt', 'tokenizers')
+    download_nltk_data_if_needed('punkt_tab', 'tokenizers')
 except Exception as e:
     st.stop() # Stop execution if download fails critically
 
