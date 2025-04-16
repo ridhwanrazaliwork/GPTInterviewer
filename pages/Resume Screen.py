@@ -8,7 +8,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import RetrievalQA, ConversationChain
 from langchain.prompts.prompt import PromptTemplate
-from prompts.prompts import templates
+from prompts.prompts_template import templates
 from typing import Literal
 # from aws.synthesize_speech import synthesize_speech
 from speech_recognition.openai_synthesize_speech import synthesize_speech
@@ -21,6 +21,27 @@ from streamlit_lottie import st_lottie
 import json
 from IPython.display import Audio
 import nltk
+
+def download_nltk_data_if_needed(resource_id, resource_subdir):
+    """Checks if NLTK resource exists, downloads if needed."""
+    try:
+        nltk.data.find(f"{resource_subdir}/{resource_id}")
+        # print(f"NLTK resource '{resource_id}' already present.") # Optional debug print
+    except LookupError:
+        print(f"NLTK resource '{resource_id}' not found. Downloading...")
+        nltk.download(resource_id)
+        print(f"NLTK resource '{resource_id}' downloaded.")
+    except Exception as e:
+        st.error(f"Error checking/downloading NLTK data '{resource_id}': {e}")
+        # Optionally re-raise or handle more gracefully depending on your needs
+        raise
+
+# --- Call the function ONCE before first use ---
+# Usually good to do this near the top level of your script or page
+try:
+    download_nltk_data_if_needed('punkt', 'tokenizers')
+except Exception as e:
+    st.stop() # Stop execution if download fails critically
 
 
 def load_lottiefile(filepath: str):

@@ -4,7 +4,7 @@ from langchain.vectorstores import FAISS
 from langchain.text_splitter import NLTKTextSplitter
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import RetrievalQA, ConversationChain
-from prompts.prompts import templates
+from prompts.prompts_template import templates
 from langchain.prompts.prompt import PromptTemplate
 from langchain.chat_models import ChatOpenAI
 from PyPDF2 import PdfReader
@@ -51,7 +51,7 @@ def initialize_session_state(template=None, position=None):
     st.session_state.token_count = 0
     #if "guideline" not in st.session_state:
     llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo",
+            model_name="gpt-4o-mini-2024-07-18",
             temperature=0.6, )
     st.session_state.guideline = RetrievalQA.from_chain_type(
             llm=llm,
@@ -61,7 +61,7 @@ def initialize_session_state(template=None, position=None):
     # llm chain and memory
     #if "screen" not in st.session_state:
     llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo",
+            model_name="gpt-4o-mini-2024-07-18",
             temperature=0.8, )
     PROMPT = PromptTemplate(
             input_variables=["history", "input"],
@@ -87,7 +87,7 @@ def initialize_session_state(template=None, position=None):
                                                     memory=st.session_state.memory)
     #if "feedback" not in st.session_state:
     llm = ChatOpenAI(
-        model_name = "gpt-3.5-turbo",
+        model_name = "gpt-4o-mini-2024-07-18",
         temperature = 0.5,)
     st.session_state.feedback = ConversationChain(
             prompt=PromptTemplate(input_variables = ["history", "input"], template = templates.feedback_template),

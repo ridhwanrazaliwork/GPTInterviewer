@@ -13,7 +13,7 @@ from langchain.text_splitter import NLTKTextSplitter
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 import nltk
-from prompts.prompts import templates
+from prompts.prompts_template import templates
 # Audio
 from speech_recognition.openai_whisper import save_wav_file, transcribe
 from audio_recorder_streamlit import audio_recorder
@@ -21,6 +21,26 @@ from audio_recorder_streamlit import audio_recorder
 from speech_recognition.openai_synthesize_speech import synthesize_speech
 from IPython.display import Audio
 
+def download_nltk_data_if_needed(resource_id, resource_subdir):
+    """Checks if NLTK resource exists, downloads if needed."""
+    try:
+        nltk.data.find(f"{resource_subdir}/{resource_id}")
+        # print(f"NLTK resource '{resource_id}' already present.") # Optional debug print
+    except LookupError:
+        print(f"NLTK resource '{resource_id}' not found. Downloading...")
+        nltk.download(resource_id)
+        print(f"NLTK resource '{resource_id}' downloaded.")
+    except Exception as e:
+        st.error(f"Error checking/downloading NLTK data '{resource_id}': {e}")
+        # Optionally re-raise or handle more gracefully depending on your needs
+        raise
+
+# --- Call the function ONCE before first use ---
+# Usually good to do this near the top level of your script or page
+try:
+    download_nltk_data_if_needed('punkt', 'tokenizers')
+except Exception as e:
+    st.stop() # Stop execution if download fails critically
 
 def load_lottiefile(filepath: str):
     with open(filepath, "r") as f:
@@ -46,7 +66,7 @@ class Message:
 def save_vector(text):
     """embeddings"""
 
-    nltk.download('punkt')
+    # nltk.download('punkt')
     text_splitter = NLTKTextSplitter()
     texts = text_splitter.split_text(text)
      # Create emebeddings
