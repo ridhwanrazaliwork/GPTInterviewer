@@ -17,7 +17,8 @@ from prompts.prompts import templates
 # Audio
 from speech_recognition.openai_whisper import save_wav_file, transcribe
 from audio_recorder_streamlit import audio_recorder
-from aws.synthesize_speech import synthesize_speech
+# from aws.synthesize_speech import synthesize_speech
+from speech_recognition.openai_synthesize_speech import synthesize_speech
 from IPython.display import Audio
 
 def load_lottiefile(filepath: str):
@@ -96,7 +97,7 @@ def initialize_session_state():
         st.session_state.memory = ConversationBufferMemory()
     if "guideline" not in st.session_state:
         llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo",
+            model_name="gpt-4o-mini-2024-07-18",
             temperature=0.8, )
         st.session_state.guideline = RetrievalQA.from_chain_type(
             llm=llm,
@@ -106,7 +107,7 @@ def initialize_session_state():
     # llm chain and memory
     if "conversation" not in st.session_state:
         llm = ChatOpenAI(
-        model_name = "gpt-3.5-turbo",
+        model_name = "gpt-4o-mini-2024-07-18",
         temperature = 0.8,)
         PROMPT = PromptTemplate(
             input_variables=["history", "input"],
@@ -131,7 +132,7 @@ def initialize_session_state():
                                                        memory=st.session_state.memory)
     if "feedback" not in st.session_state:
         llm = ChatOpenAI(
-        model_name = "gpt-3.5-turbo",
+        model_name = "gpt-4o-mini-2024-07-18",
         temperature = 0.5,)
         st.session_state.feedback = ConversationChain(
             prompt=PromptTemplate(input_variables = ["history", "input"], template = templates.feedback_template),

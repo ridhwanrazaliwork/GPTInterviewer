@@ -17,7 +17,8 @@ from prompts.prompts import templates
 # Audio
 from speech_recognition.openai_whisper import save_wav_file, transcribe
 from audio_recorder_streamlit import audio_recorder
-from aws.synthesize_speech import synthesize_speech
+# from aws.synthesize_speech import synthesize_speech
+from speech_recognition.openai_synthesize_speech import synthesize_speech
 from IPython.display import Audio
 
 
@@ -76,7 +77,7 @@ def initialize_session_state_jd():
         st.session_state.token_count = 0
     if "jd_guideline" not in st.session_state:
         llm = ChatOpenAI(
-        model_name = "gpt-3.5-turbo",
+        model_name = "gpt-4o-mini-2024-07-18",
         temperature = 0.8,)
         st.session_state.jd_guideline = RetrievalQA.from_chain_type(
             llm=llm,
@@ -85,7 +86,7 @@ def initialize_session_state_jd():
     # llm chain and memory
     if "jd_screen" not in st.session_state:
         llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo",
+            model_name="gpt-4o-mini-2024-07-18",
             temperature=0.8, )
         PROMPT = PromptTemplate(
             input_variables=["history", "input"],
@@ -111,7 +112,7 @@ def initialize_session_state_jd():
                                                            memory=st.session_state.jd_memory)
     if 'jd_feedback' not in st.session_state:
         llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo",
+            model_name="gpt-4o-mini-2024-07-18",
             temperature=0.8, )
         st.session_state.jd_feedback = ConversationChain(
             prompt=PromptTemplate(input_variables=["history", "input"], template=templates.feedback_template),

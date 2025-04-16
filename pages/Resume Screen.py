@@ -10,7 +10,8 @@ from langchain.chains import RetrievalQA, ConversationChain
 from langchain.prompts.prompt import PromptTemplate
 from prompts.prompts import templates
 from typing import Literal
-from aws.synthesize_speech import synthesize_speech
+# from aws.synthesize_speech import synthesize_speech
+from speech_recognition.openai_synthesize_speech import synthesize_speech
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.text_splitter import NLTKTextSplitter
@@ -86,7 +87,7 @@ def initialize_session_state_resume():
     # guideline for resume screen
     if "resume_guideline" not in st.session_state:
         llm = ChatOpenAI(
-        model_name = "gpt-3.5-turbo",
+        model_name = "gpt-4o-mini-2024-07-18",
         temperature = 0.5,)
 
         st.session_state.resume_guideline = RetrievalQA.from_chain_type(
@@ -96,7 +97,7 @@ def initialize_session_state_resume():
     # llm chain for resume screen
     if "resume_screen" not in st.session_state:
         llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo",
+            model_name="gpt-4o-mini-2024-07-18",
             temperature=0.7, )
 
         PROMPT = PromptTemplate(
@@ -124,7 +125,7 @@ def initialize_session_state_resume():
     # llm chain for generating feedback
     if "resume_feedback" not in st.session_state:
         llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo",
+            model_name="gpt-4o-mini-2024-07-18",
             temperature=0.5,)
         st.session_state.resume_feedback = ConversationChain(
             prompt=PromptTemplate(input_variables=["history","input"], template=templates.feedback_template),
